@@ -14,7 +14,7 @@ class MAdvance(Manipulator):
     
     def __init__(self,dataset_name):
         super().__init__(dataset_name)
-        self.positive_bank=1000
+        self.positive_bank=200
         self.num_pos=10 #example
         self.num_m=10 #number of output
         self.threshold1=0.5 #pass this ratio
@@ -39,6 +39,8 @@ class MAdvance(Manipulator):
     
     def LoadSemantic(self):
         name='semantic_top_32'
+
+        print("------------------------------********** ", self.img_path+name)
         with open(self.img_path+name, 'rb') as handle:
             all_semantic_top = pickle.load(handle)
 
@@ -104,6 +106,7 @@ class MAdvance(Manipulator):
     
     def SimulateInput(self,positive=True):
         print('bname: '+str(self.bname))
+
         tmp_indexs=self.results[self.bname].argsort()
         if positive:
             tmp=tmp_indexs[:self.positive_bank]
@@ -168,12 +171,12 @@ class MAdvance(Manipulator):
     
     #%%
 if __name__ == "__main__":
-    dataset_name='ffhq'
+    dataset_name='ffhq_NT'
     M=MAdvance(dataset_name=dataset_name)
     np.set_printoptions(suppress=True)
     #%%
     
-    M.bname='13-blond-hair'  #01-smiling, 37-wearing-lipstick,13-blond-hair
+    M.bname='27-no-beard'  #01-smiling, 37-wearing-lipstick,13-blond-hair
 #    lp_sort=M.ConsistenceCheck(num_run=1000)
     
     lp_candidate,lp_sort= M.AllCheck()
@@ -184,45 +187,75 @@ if __name__ == "__main__":
     plt.xlabel('(layer_index, channel_index)')
     #%%
     
-    M.alpha=[-20,-10,-5,0,5,10,20]
-    M.img_index=0
-    M.num_images=20
-    start=0
+    # M.alpha=[-20,-10,-5,0,5,10,20]
+    # M.img_index=0
+    # M.num_images=100
+    # start=0
 
-    for i in range(10):
-        print(i)
-        tmp=lp_sort.index[start+i]
-        lindex,bname=np.array(tmp.split('_')) 
-        lindex,bname=int(lindex),int(bname)
+    # for i in range(10):
+    #     print(i)
+    #     tmp=lp_sort.index[start+i]
+    #     lindex,bname=np.array(tmp.split('_')) 
+    #     lindex,bname=int(lindex),int(bname)
         
-        M.manipulate_layers=[lindex]
-        codes,out=M.EditOneC(bname) 
-        tmp=str(M.manipulate_layers)+'_'+str(bname)
-        M.Vis(tmp,'c',out)
-    #%%
+    #     M.manipulate_layers=[lindex]
+    #     codes,out=M.EditOneC(bname) 
+    #     tmp=str(M.manipulate_layers)+'_'+str(bname)
+    #     M.Vis(tmp,'c',out)
+    # #%%
+    
+    # num_view=5
+    # target_index=(10,)
+    # lp_candidate,_=M.GetRank(target_index)
+    # print(lp_candidate.shape)
+    # #%%
+    
+    # M.alpha=[-20,-10,-5,0,5,10,20]
+    # M.img_index=0
+    # M.num_images=20
+    # start=0
+    
+    # for i in range(num_view):
+        
+    #     lindex,bname,_=lp_candidate[start+i].astype(int)
+    #     lindex=int(lindex)
+    #     M.manipulate_layers=[lindex]
+    #     codes,out=M.EditOneC(bname)
+    #     tmp=str(M.manipulate_layers)+'_'+str(bname)
+    #     M.Vis(tmp,'c',out)
+    # #%%
     
     num_view=5
     target_index=(10,)
-    lp_candidate,_=M.GetRank(target_index)
+    # lp_candidate,_=M.GetRank(target_index)
     print(lp_candidate.shape)
     #%%
     
-    M.alpha=[-20,-10,-5,0,5,10,20]
+    M.alpha=[-8,-6,-4,-2,0,2,4,6,8]
     M.img_index=0
-    M.num_images=20
+    M.num_images=100
     start=0
-    
-    for i in range(num_view):
+
         
-        lindex,bname,_=lp_candidate[start+i].astype(int)
-        lindex=int(lindex)
-        M.manipulate_layers=[lindex]
-        codes,out=M.EditOneC(bname)
-        tmp=str(M.manipulate_layers)+'_'+str(bname)
-        M.Vis(tmp,'c',out)
+    lindex,bname=9,421
+    
+    lindex=int(lindex)
+    M.manipulate_layers=[lindex]
+    codes,out=M.EditOneC(bname)
+    tmp=str(M.manipulate_layers)+'_'+str(bname)
+    M.Vis(tmp,'c',out)
+
+    # for i in range(num_view):
+        
+    #     lindex,bname,_=lp_candidate[start+i].astype(int)
+
+    #     lindex=int(lindex)
+    #     M.manipulate_layers=[lindex]
+    #     codes,out=M.EditOneC(bname)
+    #     tmp=str(M.manipulate_layers)+'_'+str(bname)
+    #     M.Vis(tmp,'c',out)
     #%%
     
-
     
     
     

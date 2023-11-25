@@ -30,9 +30,9 @@ def convert_images_from_uint8(images, drange=[-1,1], nhwc_to_nchw=False):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='predict pose of object')
-    parser.add_argument('-img_path',type=str,help='path to image folder')
-    parser.add_argument('-save_path',type=str,help='path to save attribute file') 
-    parser.add_argument('-classifer_path',default='./metrics_checkpoint',type=str,help='path to a folder of classifers') 
+    parser.add_argument('-img_path',type=str,default="./Output/images.npy",help='path to image folder')
+    parser.add_argument('-save_path',type=str,default="./Output/attribute",help='path to save attribute file') 
+    parser.add_argument('-classifer_path',default='./metrics_checkpoint/att/',type=str,help='path to a folder of classifers') 
     parser.add_argument('-batch_size',default=5,type=int,help='batch size') 
     
     opt = parser.parse_args()

@@ -1,0 +1,4 @@
+pandas
+matplotlib
+opencv-python-headless==4.0.1.24
+scikit-learn
